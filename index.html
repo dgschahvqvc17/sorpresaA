@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Arleth! 🎂</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&family=Caveat:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #e91e63;
+            --secondary: #f48fb1;
+            --accent: #ffd54f;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0c29;
+            color: white;
+        }
+
+        .app {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            transform: translateX(100%);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 10;
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 25px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            transform: scale(1.5);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 1000;
+            transition: width 0.3s;
+        }
+
+        .effects {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.15;
+                transform: scale(0.7);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .slide-cover {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            text-align: center;
+        }
+
+        .cover-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 12vw, 5rem);
+            background: linear-gradient(135deg, #fff, #ffd54f, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200%;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 0%;
+            }
+
+            50% {
+                background-position: 100%;
+            }
+
+            100% {
+                background-position: 0%;
+            }
+        }
+
+        .cover-subtitle {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 7vw, 3rem);
+            color: var(--secondary);
+            margin: 15px 0 30px;
+        }
+
+        .cover-desc {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-bottom: 30px;
+            line-height: 1.7;
+            color: #e0e0e0;
+        }
+
+        .start-btn {
+            padding: 16px 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        .slide-envelope {
+            background: linear-gradient(180deg, #1a1a2e, #0f3460);
+        }
+
+        .env-btn {
+            width: min(280px, 75vw);
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .env-body {
+            position: relative;
+            aspect-ratio: 1/0.7;
+            transition: transform 0.4s;
+        }
+
+        .env-btn:hover .env-body {
+            transform: scale(1.05);
+        }
+
+        .env-back {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(233, 69, 96, 0.4);
+        }
+
+        .env-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(180deg, #ff6b6b, #ffa8a8);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 5;
+        }
+
+        .env-body.open .env-flap {
+            transform: rotateX(180deg);
+        }
+
+        .env-front {
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 45%;
+            background: white;
+            border-radius: 0 0 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .env-icon {
+            font-size: 2.5rem;
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .env-hint {
+            margin-top: 25px;
+            font-size: 1.1rem;
+            color: var(--secondary);
+            animation: fadeInOut 2s infinite;
+        }
+
+        @keyframes fadeInOut {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .slide-message {
+            background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+        }
+
+        .message-box {
+            max-width: 580px;
+        }
+
+        .message-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .message-text {
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            line-height: 2.1;
+            padding: 28px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #f0f0f0;
+        }
+
+        .surprise-card {
+            max-width: 440px;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            text-align: center;
+            transition: all 0.4s;
+        }
+
+        .surprise-card:hover {
+            transform: translateY(-12px);
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+
+        .surprise-icon {
+            font-size: clamp(3.5rem, 12vw, 5rem);
+            margin-bottom: 15px;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            100% {
+                transform: rotate(-10deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(10deg) scale(1.1);
+            }
+        }
+
+        .surprise-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .surprise-desc {
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            line-height: 1.85;
+            color: #f0f0f0;
+        }
+
+        .surprise-bible {
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            font-style: italic;
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            border-left: 4px solid #ffd54f;
+            color: #ffd54f;
+            font-weight: 600;
+        }
+
+        .slide-hint {
+            position: absolute;
+            bottom: 80px;
+            font-size: 0.95rem;
+            opacity: 0.65;
+            animation: fadeInOut 2s infinite;
+        }
+
+        /* Fondos con buen contraste */
+        .s1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .s1 .surprise-card {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .s1 .surprise-title {
+            color: #ffd54f;
+        }
+
+        .s1 .surprise-desc {
+            color: #f0f0f0;
+        }
+
+        .s1 .surprise-bible {
+            background: rgba(0, 0, 0, 0.35);
+            color: #ffd54f;
+            font-weight: 600;
+        }
+
+        .s2 {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .s2 .surprise-card {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .s2 .surprise-title {
+            color: #fff;
+        }
+
+        .s2 .surprise-desc {
+            color: #f5f5f5;
+        }
+
+        .s2 .surprise-bible {
+            background: rgba(0, 0, 0, 0.35);
+            color: #ffd54f;
+            font-weight: 600;
+        }
+
+        .s3 {
+            background: linear-gradient(135deg, #fa709a, #fee140);
+            color: #333;
+        }
+
+        .s3 .surprise-card {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .s3 .surprise-title {
+            color: #333;
+        }
+
+        .s3 .surprise-desc {
+            color: #444;
+        }
+
+        .s3 .surprise-bible {
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            border-left-color: #fff;
+            font-weight: 600;
+        }
+
+        .s4 {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .s4 .surprise-card {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .s4 .surprise-title {
+            color: #fff;
+        }
+
+        .s4 .surprise-desc {
+            color: #e3f2fd;
+        }
+
+        .s4 .surprise-bible {
+            background: rgba(0, 0, 0, 0.3);
+            color: #ffd54f;
+        }
+
+        .s5 {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: #333;
+        }
+
+        .s5 .surprise-card {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .s5 .surprise-title {
+            color: #1b5e20;
+        }
+
+        .s5 .surprise-desc {
+            color: #1b5e20;
+        }
+
+        .s5 .surprise-bible {
+            color: #1b5e20;
+            background: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+        }
+
+        .s6 .surprise-card {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .s6 .surprise-title {
+            color: #9c27b0;
+        }
+
+        .s6 .surprise-desc {
+            color: #222;
+        }
+
+        .s6 .surprise-bible {
+            color: #6a1b9a;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .s7 {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: #333;
+        }
+
+        .s7 .surprise-card {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .s7 .surprise-title {
+            color: #c2185b;
+        }
+
+        .s7 .surprise-desc {
+            color: #222;
+        }
+
+        .s7 .surprise-bible {
+            color: #880e4f;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .s7 .surprise-title {
+            color: #d63384;
+        }
+
+        .s7 .surprise-desc {
+            color: #222;
+        }
+
+        .s8 {
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+            color: #333;
+        }
+
+        .s8 .surprise-card {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .s8 .surprise-title {
+            color: #7b1fa2;
+        }
+
+        .s8 .surprise-desc {
+            color: #222;
+        }
+
+        .s8 .surprise-bible {
+            color: #4a148c;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .s9 {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            color: #333;
+        }
+
+        .s9 .surprise-card {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .s9 .surprise-title {
+            color: #d84315;
+        }
+
+        .s9 .surprise-desc {
+            color: #2d3436;
+        }
+
+        .s9 .surprise-bible {
+            background: rgba(0, 0, 0, 0.2);
+            color: #bf360c;
+            font-weight: 600;
+        }
+
+        .s10 {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77);
+            color: white;
+        }
+
+        .s10 .surprise-card {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .s10 .surprise-title {
+            color: #fff;
+        }
+
+        .s10 .surprise-desc {
+            color: #fff;
+        }
+
+        .s10 .surprise-bible {
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            font-weight: 600;
+            border-left-color: #ffd54f;
+        }
+
+        .slide-cake {
+            background: linear-gradient(180deg, #ff6b6b, #ffd93d, #6bcb77);
+            position: relative;
+        }
+
+        .cake-area {
+            text-align: center;
+            animation: floatCake 3s ease-in-out infinite;
+        }
+
+        @keyframes floatCake {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+
+        .cake {
+            display: inline-block;
+            position: relative;
+        }
+
+        .cake-layers {
+            position: relative;
+        }
+
+        .cake-l {
+            border-radius: 10px;
+            margin: 0 auto 4px;
+            position: relative;
+        }
+
+        .cl-3 {
+            width: 110px;
+            height: 45px;
+            background: #5dade2;
+        }
+
+        .cl-2 {
+            width: 150px;
+            height: 55px;
+            background: #af7ac5;
+        }
+
+        .cl-1 {
+            width: 190px;
+            height: 65px;
+            background: #935b28;
+        }
+
+        .cream-top {
+            position: absolute;
+            top: -6px;
+            left: -5px;
+            right: -5px;
+            height: 12px;
+            background: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .candles-box {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .candle {
+            width: 12px;
+            height: 45px;
+            background: linear-gradient(90deg, #ec7063, #f1948a);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .flame {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 26px;
+            background: radial-gradient(ellipse, #fff 0%, #ffd700 30%, #ff6b00 70%, transparent);
+            border-radius: 50%;
+            animation: flick 0.25s infinite alternate;
+        }
+
+        @keyframes flick {
+            0% {
+                transform: translateX(-50%) scaleY(1) rotate(-3deg);
+            }
+
+            100% {
+                transform: translateX(-50%) scaleY(1.15) rotate(3deg);
+            }
+        }
+
+        .flame-glow {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, rgba(255, 200, 0, 0.5), transparent 70%);
+            animation: glowPulse 0.8s infinite alternate;
+            filter: blur(2px);
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.4;
+                transform: translateX(-50%) scale(1);
+            }
+
+            100% {
+                opacity: 0.7;
+                transform: translateX(-50%) scale(1.2);
+            }
+        }
+
+        .cake-final-msg {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            line-height: 1.8;
+            animation: msgGlow 2s infinite alternate;
+        }
+
+        @keyframes msgGlow {
+            0% {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            }
+
+            100% {
+                text-shadow: 1px 1px 20px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        .return-btn {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.5);
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+
+        .return-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .firework {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .fw-star {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: fwExplode 1.5s ease-out forwards;
+        }
+
+        @keyframes fwExplode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            30% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .balloon {
+            position: absolute;
+            animation: balloonRise 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes balloonRise {
+            0% {
+                transform: translateY(110vh) scale(0.8);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.9;
+            }
+
+            90% {
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: translateY(-15vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .typing-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            border-right: 3px solid white;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                border-color: white;
+            }
+
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .nav-bar {
+                bottom: 12px;
+                gap: 5px;
+            }
+
+            .nav-dot {
+                width: 6px;
+                height: 6px;
+            }
+
+            .surprise-card {
+                padding: 25px;
+            }
+
+            .slide-hint {
+                bottom: 65px;
+            }
+
+            .return-btn {
+                bottom: 65px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="progress"></div>
+    <div class="effects" id="effects"></div>
+
+    <div class="app" id="app">
+        <div class="slide slide-cover active" data-i="0">
+            <div class="cover-icon">🎁</div>
+            <h1 class="cover-title">Feliz Cumpleaños</h1>
+            <p class="cover-subtitle">Para Arleth</p>
+            <p class="cover-desc">Hoy celebramos un día muy especial.<br>Prepárate para muchas sorpresas.</p>
+            <button class="start-btn" onclick="go(1)">Comenzar 🎉</button>
+        </div>
+
+        <div class="slide slide-envelope" data-i="1">
+            <div class="env-btn" onclick="openEnv()">
+                <div class="env-body" id="envelope">
+                    <div class="env-back"></div>
+                    <div class="env-flap"></div>
+                    <div class="env-front"><span class="env-icon">💌</span></div>
+                </div>
+            </div>
+            <p class="env-hint">👆 Toca para abrir</p>
+        </div>
+
+        <div class="slide slide-message" data-i="2">
+            <div class="message-box">
+                <h2 class="message-title">💕 Para ti, Arleth</h2>
+                <p class="message-text">Llegaste a este día especial y quiero decirte algo que quizás no sabías: hay
+                    algo en ti que brilla sin pretenderlo. No nos conocemos mucho, es verdad, pero lo poco que sé de ti
+                    me alcanza para saber que eres auténtica, alguien genuina que ilumina sin buscarlo. Eso vale más de
+                    lo que imaginas. En este nuevo año de vida, deseo que encuentres lo que buscas: momentos felices,
+                    personas que te valoren, y la fuerza para seguir siendo tú. Que este ciclo te sorprenda con cosas
+                    bonitas, como me ha sorprendido a mí. ¡Feliz cumple! Que este nuevo año llegue con mucha bendición,
+                    alegría y amor para ti.</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s1" data-i="3">
+            <div class="surprise-card">
+                <div class="surprise-icon">💡</div>
+                <h3 class="surprise-title">✨ Tu Luz ✨</h3>
+                <p class="surprise-desc">Así como tu Arleth eres una persona marravillosa, que iluminas con tu bella
+                    sonrisa cada lugar donde estás. Que esta luz nunca se apague y guíe siempre tu camino con claridad y
+                    esperanza en cada paso que das.</p>
+                <p class="surprise-bible">"El Señor es mi luz y mi salvación" - Salmos 27:1 💡</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s2" data-i="4">
+            <div class="surprise-card">
+                <div class="surprise-icon">💪</div>
+                <h3 class="surprise-title">🏆 Fortaleza 🏆</h3>
+                <p class="surprise-desc">Que tengas la fuerza para enfrentar cualquier desafío. Eres más fuerte de lo
+                    que crees y capaz de lograr todo lo que te propones, sin importar lo difícil.</p>
+                <p class="surprise-bible">"Pon tu mirada en mí y sé fuerte" - Josué 1:9 💪</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s3" data-i="5">
+            <div class="surprise-card">
+                <div class="surprise-icon">😄</div>
+                <h3 class="surprise-title">😊 Alegría 😊</h3>
+                <p class="surprise-desc">Que la alegría inunde tu corazón cada mañana. Que sonrías sin preocupaciones y
+                    que cada día te trae nuevas razones para celebrar la vida.</p>
+                <p class="surprise-bible">"El Señor te da la alegría" - Nehemías 8:10 😄</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s4" data-i="6">
+            <div class="surprise-card">
+                <div class="surprise-icon">💫</div>
+                <h3 class="surprise-title">🌟 Destellos 🌟</h3>
+                <p class="surprise-desc">Que brilles con luz propia. Que tu luz interior ilumine no solo tu camino, sino
+                    también la vida de quienes te rodean cada día.</p>
+                <p class="surprise-bible">"Porque tú eres la luz del mundo" - Mateo 5:14 💡</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s5" data-i="7">
+            <div class="surprise-card">
+                <div class="surprise-icon">🌈</div>
+                <h3 class="surprise-title">🎨 Color 🎨</h3>
+                <p class="surprise-desc">Que tu vida se llene de colores vibrantes y hermosos. Que cada día traiga algo
+                    nuevo y hermoso que te haga sonreír y soñar.</p>
+                <p class="surprise-bible">"Jesús les dice: Yo estoy aquí" - Juan 14:6 🌈</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s6" data-i="8">
+            <div class="surprise-card">
+                <div class="surprise-icon">⭐</div>
+                <h3 class="surprise-title">✨ Sueños ✨</h3>
+                <p class="surprise-desc">Que todos tus sueños se hagan realidad. Que las estrellas se alineen para ti y
+                    que cada meta alcanzada sea solo el comienzo de otra más grande.</p>
+                <p class="surprise-bible">"Sueña y serás libre" - Lucas 12:32</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s7" data-i="9">
+            <div class="surprise-card">
+                <div class="surprise-icon">💎</div>
+                <h3 class="surprise-title">💎 Oportunidades 💎</h3>
+                <p class="surprise-desc">Que las mejores oportunidades lleguen a ti. Que cada puerta se abra en el
+                    momento perfecto y que jamás te falten las chances de brillar y crecer.</p>
+                <p class="surprise-bible">"Todo lo que necesitas estará en tus manos" - Mateo 6:33 💎</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s8" data-i="10">
+            <div class="surprise-card">
+                <div class="surprise-icon">🌺</div>
+                <h3 class="surprise-title">🌺 Belleza 🌺</h3>
+                <p class="surprise-desc">Que tu belleza interior brille cada dia. Que tu bondad y alegria iluminen a
+                    todos a tu alrededor.</p>
+                <p class="surprise-bible">Eres bellamente hecha - Salmos 139:14</p>
+            </div>
+            <p class="slide-hint">Desliza para mas</p>
+        </div>
+
+        <div class="slide s9" data-i="11">
+            <div class="surprise-card">
+                <div class="surprise-icon">🌻</div>
+                <h3 class="surprise-title">🌻 Esperanza 🌻</h3>
+                <p class="surprise-desc">Que siempre exista la esperanza en tu corazón. Que en los momentos difíciles
+                    encuentres la fuerza para seguir adelante con alegría.</p>
+                <p class="surprise-bible">"Que tu esperanza sea tu alegría" - Romanos 12:12 🌻</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide s10" data-i="12">
+            <div class="surprise-card">
+                <div class="surprise-icon">🎊</div>
+                <h3 class="surprise-title">🎉 Alegría Eterna 🎉</h3>
+                <p class="surprise-desc">Que este nuevo año de vida esté lleno de fiesta, risas y momentos memorables.
+                    Que la alegría sea tu compañera diaria.</p>
+                <p class="surprise-bible">"Alégrense siempre" - 1 Tesalonicenses 16:8</p>
+            </div>
+            <p class="slide-hint">👉 Desliza para más →</p>
+        </div>
+
+        <div class="slide slide-cake" data-i="13">
+            <div class="cake-area">
+                <div class="cake">
+                    <div class="candles-box">
+                        <div class="candle">
+                            <div class="flame-glow"></div>
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle">
+                            <div class="flame-glow"></div>
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle">
+                            <div class="flame-glow"></div>
+                            <div class="flame"></div>
+                        </div>
+                    </div>
+                    <div class="cake-layers">
+                        <div class="cake-l cl-3">
+                            <div class="cream-top"></div>
+                        </div>
+                        <div class="cake-l cl-2">
+                            <div class="cream-top"></div>
+                        </div>
+                        <div class="cake-l cl-1">
+                            <div class="cream-top"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="typing-container">
+                    <p class="typing-text" id="typing"></p>
+                </div>
+                <div class="cake-final-msg" id="finalMsg">
+                    🎂 ¡Que el Señor te bendiga, Arleth! 🎉<br><br>
+                    Que este nuevo año de vida<br>
+                    esté lleno de bendiciones,<br>
+                    amor, alegría y muchas<br>
+                    razones para sonreír.<br><br>
+                    ✨ Te desea alguien<br>
+                    que valora lo valiosa<br>
+                    que eres ✨
+                </div>
+            </div>
+            <button class="return-btn" onclick="volverAlInicio()">🔄 Volver al inicio</button>
+        </div>
+    </div>
+
+    <div class="nav-bar" id="navBar"></div>
+
+    <script>
+        let curr = 0;
+        const total = 14;
+        let opened = false;
+        let busy = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            stars();
+            nav();
+            update();
+        });
+
+        function stars() {
+            const ef = document.getElementById('effects');
+            for (let i = 0; i < 30; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.innerHTML = ['✨', '⭐', '🌟', '💫'][i % 4];
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.fontSize = (12 + Math.random() * 20) + 'px';
+                s.style.animationDelay = Math.random() * 3 + 's';
+                ef.appendChild(s);
+            }
+        }
+
+        function nav() {
+            const nb = document.getElementById('navBar');
+            for (let i = 0; i < total; i++) {
+                const d = document.createElement('div');
+                d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                d.onclick = () => go(i);
+                nb.appendChild(d);
+            }
+        }
+
+        function go(n) {
+            if (busy || n === curr) return;
+            busy = true;
+
+            document.querySelectorAll('.slide').forEach(s => {
+                s.classList.remove('active', 'prev');
+                if (parseInt(s.dataset.i) < n) s.classList.add('prev');
+                if (parseInt(s.dataset.i) === n) s.classList.add('active');
+            });
+
+            curr = n;
+            update();
+
+            if (curr === 13) {
+                typeWriter();
+                showFireworks();
+                createBalloons();
+            }
+
+            setTimeout(() => busy = false, 700);
+        }
+
+        function next() { if (curr < total - 1) go(curr + 1); }
+
+        function update() {
+            document.querySelectorAll('.nav-dot').forEach((d, i) => {
+                d.classList.toggle('active', i === curr);
+            });
+            document.getElementById('progress').style.width = ((curr + 1) / total * 100) + '%';
+        }
+
+        function openEnv() {
+            if (opened) return;
+            opened = true;
+            document.getElementById('envelope').classList.add('open');
+            setTimeout(() => go(2), 800);
+        }
+
+        function typeWriter() {
+            const text = '🎂 ¡Feliz Cumpleaños, Arleth! 🎉';
+            let i = 0;
+            const el = document.getElementById('typing');
+            el.textContent = '';
+
+            function type() {
+                if (i < text.length) {
+                    el.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 120);
+                }
+            }
+            setTimeout(type, 500);
+        }
+
+        function showFireworks() {
+            const fw = document.createElement('div');
+            fw.className = 'firework';
+            fw.style.left = '20%';
+            fw.style.top = '30%';
+            document.querySelector('.slide-cake').appendChild(fw);
+
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4ecdc4', '#e91e63'];
+            const icons = ['✨', '⭐', '❤️', '🎉'];
+
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const s = document.createElement('div');
+                    s.className = 'fw-star';
+                    s.innerHTML = icons[i % 4];
+                    s.style.color = colors[i % 5];
+                    s.style.left = (Math.random() * 60 + 20) + '%';
+                    s.style.top = (Math.random() * 50 + 20) + '%';
+                    s.style.animationDelay = (i * 0.1) + 's';
+                    fw.appendChild(s);
+                }, i * 100);
+            }
+            setTimeout(() => fw.remove(), 3000);
+        }
+
+        function createBalloons() {
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4ecdc4', '#e91e63'];
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const b = document.createElement('div');
+                    b.className = 'balloon';
+                    b.innerHTML = '🎈';
+                    b.style.left = (Math.random() * 80 + 10) + '%';
+                    b.style.color = colors[i % 5];
+                    b.style.fontSize = (30 + Math.random() * 20) + 'px';
+                    b.style.animationDuration = (6 + Math.random() * 4) + 's';
+                    document.querySelector('.slide-cake').appendChild(b);
+                    setTimeout(() => b.remove(), 10000);
+                }, i * 300);
+            }
+        }
+
+        let sx = 0, ex = 0;
+        document.addEventListener('touchstart', e => sx = e.changedTouches[0].screenX);
+        document.addEventListener('touchend', e => { ex = e.changedTouches[0].screenX; swipe(); });
+        document.addEventListener('mousedown', e => sx = e.screenX);
+        document.addEventListener('mouseup', e => { ex = e.screenX; swipe(); });
+
+        function swipe() {
+            const d = sx - ex;
+            if (Math.abs(d) > 50) d > 0 ? next() : go(curr - 1);
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') next();
+            else if (e.key === 'ArrowLeft') go(curr - 1);
+        });
+
+        document.addEventListener('wheel', e => {
+            if (e.deltaY > 0) next();
+            else if (e.deltaY < 0) go(curr - 1);
+        });
+
+        function volverAlInicio() {
+            showFireworks();
+            createBalloons();
+            setTimeout(() => go(0), 500);
+        }
+    </script>
+</body>
+
+</html>
